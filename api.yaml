@@ -1,0 +1,64 @@
+openapi: 3.0.1
+info:
+  title: MyTestCatAPI
+  version: 1.0.0
+  description: This is API TEST
+  termsOfService: https://example.com/
+  contact:
+    email: something@example.com
+    name: Support Contact
+    url: https://example.com/contact
+  license:
+    name: ThisIsLicence
+    url: https://example.com/licence
+servers:
+  - url: https://my-json-server.typicode.com/bearc0025/api
+    variables: {}
+    description: Fake API server on Github
+  - url: https://my-json-server.typicode.com/ElinaBM/api
+    variables: {}
+    description: Fake API server Elina Github
+paths:
+  /users:
+    summary: user level operation
+    description: to read and update users
+    get:
+      summary: Fetch users
+      description: Reads users from server
+      operationId: fetchUsers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "abc"
+                  username:
+                    type: string
+                    example: "user"
+                  score:
+                    type: integer
+                    example: 5
+                  active:
+                    type: boolean
+                    example: true
+        default:
+          description: Default error sample response
+      tags:
+        - users
+  /attempts:
+    summary: attempts level operation
+    description: to read and update attempts
+    get:
+      summary: Fetch attempts
+      description: Reads attempts from server
+      operationId: fetchAttempts
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - users      
