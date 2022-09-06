@@ -1,0 +1,23 @@
+{
+	"users": [{
+		"id": "123",
+		"username": "user1",
+		"score": 1,
+		"active": true
+	}, {
+		"id": "124",
+		"username": "user2",
+		"score": 1,
+		"active": true
+	}, {
+		"id": "125",
+		"username": "user3",
+		"score": 2,
+		"active": false
+	}, {
+		"id": "126",
+		"username": "user4",
+		"score": 3,
+		"active": true
+	}]
+}
