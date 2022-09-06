@@ -19,5 +19,14 @@
 		"username": "user4",
 		"score": 3,
 		"active": true
+	}],
+	"attempts": [{
+		"id": "111",
+		"score": 5,
+		"userId": "123"
+	}, {
+		"id": "112",
+		"score": 8,
+		"userId": "126"
 	}]
 }
