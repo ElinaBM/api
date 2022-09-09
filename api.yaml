@@ -12,12 +12,30 @@ info:
     name: ThisIsLicence
     url: https://example.com/licence
 servers:
+  - url: http://localhost:3000/
+    variables: {}
+    description: Fake local API server
   - url: https://my-json-server.typicode.com/bearc0025/api
     variables: {}
     description: Fake API server on Github
   - url: https://my-json-server.typicode.com/ElinaBM/api
     variables: {}
     description: Fake API server Elina Github
+  - url: https://my-json-server.typicode.com/{github}/{repo}
+    variables:
+      github:
+        default: ElinaBM
+        enum:
+          - ElinaBM
+          - other
+        description: Github account
+      repo:
+        default: api
+        enum:
+          - api
+          - other
+        description: repo name
+    description: server with variables
 paths:
   /users:
     summary: user level operation
@@ -27,25 +45,21 @@ paths:
       description: Reads users from server
       operationId: fetchUsers
       responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: "abc"
-                  username:
-                    type: string
-                    example: "user"
-                  score:
-                    type: integer
-                    example: 5
-                  active:
-                    type: boolean
-                    example: true
+        2XX:
+          $ref: '#/components/responses/UserArrayResponseBody'
+        default:
+          description: Default error sample response
+      tags:
+        - users
+    post:
+      summary: create user
+      description: create user on server
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserPostBody'
+      responses:
+        2XX:
+          $ref: '#/components/responses/UserRespBody'
         default:
           description: Default error sample response
       tags:
@@ -61,4 +75,86 @@ paths:
         default:
           description: Default error sample response
       tags:
-        - users      
+        - users
+  /users/{userId}:
+    summary: specific user operation
+    description: fetch, update, delete user
+    get:
+      summary: fetch user
+      description: fetch user by id
+      operationId: fetchUser
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserRespBody'
+        default:
+          description: Default error sample response
+      tags:
+        - users
+    delete:
+      summary: deletes user
+      description: remove user from server
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - users
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: user id
+      schema:
+        type: string
+        example: 1234abc
+  responses:
+    UserArrayResponseBody:
+      description: user array response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserArray'
+    UserRespBody:
+      description: user response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FullUser'
+  requestBodies:
+    UserPostBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostNewUser'
+  schemas:
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/FullUser'
+    PostNewUser:
+      type: object
+      properties:
+        username:
+          type: string
+          example: user
+        score:
+          type: integer
+          example: 55
+        active:
+          type: boolean
+          example: true
+    FullUser:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: abc
